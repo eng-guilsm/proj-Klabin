@@ -1,0 +1,20 @@
+metrica,valor,unidade
+WACC,13.80414281936257,% a.a.
+Ke (CAPM),20.886441489750126,% a.a.
+Kd pós-IR,5.147999999999999,% a.a.
+Beta,0.5979140753461734,coef.
+Selic (Rf),14.499999999999998,% a.a.
+ERP,6.5,% a.a.
+CRP,2.5,% a.a.
+D/(D+E),45,%
+Alíquota IR,34,%
+TIR Implícita,9.103653950946706,% a.a.
+Spread TIR-WACC,-4.700488868415863,p.p.
+EV Calculado,28.967173685632055,R$ bi
+PV FCFFs,16.871235257931712,R$ bi
+PV Valor Terminal,12.095938427700343,R$ bi
+Equity Value,-2.1328263143679456,R$ bi
+Preço-Alvo,-1.6131922668673917,R$/unit
+Preço Mercado,16.459999084472656,R$/unit
+Upside,-109.80068260385978,%
+g Perpetuidade,3.5000000000000004,% a.a.

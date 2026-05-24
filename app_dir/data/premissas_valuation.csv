@@ -1,0 +1,27 @@
+parametro,valor,descricao
+wacc,0.102,WACC (% a.a.)
+ke,0.131,Ke - Custo Capital Próprio (% a.a.)
+kd_pre_tax,0.078,Kd - Custo Dívida Pré-IR (% a.a.)
+de_ratio,0.45,D/(D+E) - Estrutura Capital
+growth_rate_g,0.035,Taxa Crescimento Perpetuidade (g)
+periodo_projecao,10,Período Projeção (anos)
+bhkp_2025e,600,BHKP 2025E (US$/t)
+bhkp_lp,580,BHKP Longo Prazo (US$/t)
+cambio_2025,5.8,Câmbio 2025 (R$/USD)
+cambio_lp,5.5,Câmbio Longo Prazo (R$/USD)
+margem_ebitda_norm_min,0.33,Margem EBITDA Normalizada Mín.
+margem_ebitda_norm_max,0.35,Margem EBITDA Normalizada Máx.
+capex_receita_min,0.13,CAPEX/Receita Mín.
+capex_receita_max,0.15,CAPEX/Receita Máx.
+ev_calculado,57.2,Valor da Firma EV (R$ bi)
+divida_liquida_base,28.8,Dívida Líquida Base (R$ bi)
+outros_passivos,2.3,Outros Passivos e Minoritários (R$ bi)
+equity_value,26.1,Equity Value (R$ bi)
+preco_alvo_fcd,24.8,Preço-Alvo FCD (R$/unit)
+preco_alvo_multiplos,24.55,Preço-Alvo Múltiplos Média (R$/unit)
+preco_alvo_final,24.5,Preço-Alvo Final (R$/unit)
+preco_atual_mai2025,20.8,Preço Atual Mai/2025 (R$/unit)
+market_cap,27.5,Market Cap (R$ bi)
+aliquota_ir,0.34,Alíquota IR (IRPJ+CSLL)
+peso_fcd,0.6,Peso FCD no Preço-Alvo
+peso_multiplos,0.4,Peso Múltiplos no Preço-Alvo
