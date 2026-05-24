@@ -1,0 +1,304 @@
+---
+title: "KLABIN S.A. (KLBN11)"
+subtitle: "Relatório de Valuation — Análise Institucional"
+author: "Pipeline Automatizada | Projeto Klabin"
+date: today
+format:
+  pdf:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    colorlinks: true
+    linkcolor: NavyBlue
+    urlcolor: NavyBlue
+    geometry:
+      - top=25mm
+      - left=25mm
+      - right=25mm
+      - bottom=25mm
+    fontsize: 11pt
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{longtable}
+        \usepackage{array}
+        \usepackage{colortbl}
+        \usepackage{xcolor}
+        \definecolor{klabinblue}{HTML}{1a2742}
+        \definecolor{klabingold}{HTML}{f0b429}
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[L]{\textcolor{klabinblue}{\small KLABIN S.A. | KLBN11}}
+        \fancyhead[R]{\textcolor{klabinblue}{\small Equity Research}}
+        \fancyfoot[C]{\textcolor{gray}{\small Este relatório tem caráter informativo. Não constitui recomendação de investimento.}}
+        \fancyfoot[R]{\thepage}
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+#| include: false
+library(dplyr)
+library(tidyr)
+library(readr)
+library(ggplot2)
+library(scales)
+library(knitr)
+
+# Carregar dados
+dados <- readRDS("data/dados_completos.rds")
+modelo <- readRDS("data/modelo_wacc.rds")
+fluxos <- read_csv("data/fluxos_caixa_projetados.csv", show_col_types = FALSE)
+resultados <- read_csv("data/resultados_modelo.csv", show_col_types = FALSE)
+
+financeiros <- dados$financeiros
+premissas <- dados$premissas
+multiplos <- dados$multiplos
+pares <- dados$pares
+
+tema_klabin <- theme_minimal(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 13, color = "#1a2742"),
+    plot.subtitle = element_text(color = "#666666", size = 9),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.position = "bottom"
+  )
+```
+
+# Resumo Executivo
+
+A **Klabin S.A.** (KLBN11) é a maior produtora e exportadora de papéis para embalagens do Brasil, com operações verticalizadas da floresta ao produto final. Esta análise atualiza o valuation institucional com dados de mercado de `r format(Sys.Date(), "%B de %Y")`.
+
+::: {layout-ncol=2}
+
+| **Indicador** | **Valor** |
+|:---|---:|
+| Preço Atual | R\$ `r sprintf("%.2f", modelo$preco_atual)` |
+| Preço-Alvo (FCD) | R\$ `r sprintf("%.2f", modelo$preco_alvo)` |
+| Upside Potencial | `r sprintf("%.1f%%", modelo$upside * 100)` |
+| WACC | `r sprintf("%.2f%%", modelo$wacc * 100)` |
+| TIR Implícita | `r sprintf("%.2f%%", modelo$tir * 100)` |
+
+| **Indicador 2025E** | **R\$ bi** |
+|:---|---:|
+| Receita Líquida | 24,5 |
+| EBITDA Ajustado | 8,4 |
+| Margem EBITDA | 34,3% |
+| Dívida Líquida | 27,0 |
+| DL/EBITDA | 3,2x |
+
+:::
+
+\newpage
+
+# Premissas Macroeconômicas (2026)
+
+```{r premissas-table}
+premissas_macro <- tibble(
+  `Parâmetro` = c("Taxa Selic (Rf)", "Beta KLBN11", "Prêmio de Risco (ERP)",
+                  "Country Risk Premium", "Alíquota IR", "Câmbio Projetado",
+                  "BHKP (celulose)", "Crescimento PIB Nominal (g)"),
+  `Valor` = c(
+    sprintf("%.2f%% a.a.", modelo$selic * 100),
+    sprintf("%.3f", modelo$beta),
+    sprintf("%.1f%%", modelo$premio_risco * 100),
+    sprintf("%.1f%%", modelo$crp * 100),
+    sprintf("%.0f%%", modelo$tax_rate * 100),
+    "R$ 5,80/USD (2025) → R$ 5,50/USD (LP)",
+    "US$ 600/t (2025E) → US$ 580/t (LP)",
+    sprintf("%.1f%%", modelo$g_perpetuidade * 100)
+  ),
+  `Fonte` = c("BCB (API SGS)", "Regressão KLBN11 vs Ibovespa",
+              "Damodaran / Estimativa", "EMBI+ Brasil",
+              "Legislação Brasileira", "Relatório Company Money",
+              "Relatório Company Money", "Premissa conservadora")
+)
+
+kable(premissas_macro, format = "latex", booktabs = TRUE,
+      caption = "Premissas macroeconômicas adotadas") |>
+  kableExtra::kable_styling(latex_options = c("hold_position", "striped"),
+                            font_size = 10)
+```
+
+# Memória de Cálculo — WACC
+
+## Custo de Capital Próprio (Ke) — CAPM
+
+$$K_e = R_f + \beta \times ERP + CRP$$
+
+$$K_e = `r sprintf("%.2f", modelo$selic * 100)`\%% + `r sprintf("%.3f", modelo$beta)` \times `r sprintf("%.1f", modelo$premio_risco * 100)`\%% + `r sprintf("%.1f", modelo$crp * 100)`\%%$$
+
+$$\boxed{K_e = `r sprintf("%.2f", modelo$ke * 100)`\%% \text{ a.a.}}$$
+
+## Custo de Capital de Terceiros (Kd) Pós-Impostos
+
+$$K_d^{\text{pós}} = K_d^{\text{pré}} \times (1 - t) = `r sprintf("%.1f", modelo$kd_pre_tax * 100)`\%% \times (1 - `r sprintf("%.0f", modelo$tax_rate * 100)`\%%)$$
+
+$$\boxed{K_d^{\text{pós}} = `r sprintf("%.2f", modelo$kd_post_tax * 100)`\%% \text{ a.a.}}$$
+
+## WACC Final
+
+$$WACC = \frac{E}{D+E} \times K_e + \frac{D}{D+E} \times K_d^{\text{pós}}$$
+
+$$WACC = `r sprintf("%.0f", modelo$ed_ratio * 100)`\%% \times `r sprintf("%.2f", modelo$ke * 100)`\%% + `r sprintf("%.0f", modelo$de_ratio * 100)`\%% \times `r sprintf("%.2f", modelo$kd_post_tax * 100)`\%%$$
+
+$$\boxed{WACC = `r sprintf("%.2f", modelo$wacc * 100)`\%% \text{ a.a.}}$$
+
+```{r wacc-components}
+wacc_tab <- tibble(
+  Componente = c("Ke (CAPM)", "Kd pós-IR", "WACC"),
+  `Valor (% a.a.)` = c(
+    sprintf("%.2f%%", modelo$ke * 100),
+    sprintf("%.2f%%", modelo$kd_post_tax * 100),
+    sprintf("%.2f%%", modelo$wacc * 100)
+  ),
+  Peso = c(
+    sprintf("%.0f%% (Equity)", modelo$ed_ratio * 100),
+    sprintf("%.0f%% (Dívida)", modelo$de_ratio * 100),
+    "100%"
+  ),
+  `Contribuição (p.p.)` = c(
+    sprintf("%.2f", modelo$ed_ratio * modelo$ke * 100),
+    sprintf("%.2f", modelo$de_ratio * modelo$kd_post_tax * 100),
+    sprintf("%.2f", modelo$wacc * 100)
+  )
+)
+
+kable(wacc_tab, format = "latex", booktabs = TRUE,
+      caption = "Decomposição do WACC") |>
+  kableExtra::kable_styling(latex_options = c("hold_position", "striped"),
+                            font_size = 10)
+```
+
+\newpage
+
+# Cálculo da TIR (Taxa Interna de Retorno)
+
+A TIR implícita é a taxa de desconto que iguala o Valor Presente dos fluxos de caixa projetados ao Enterprise Value de mercado atual.
+
+$$EV_{\text{mercado}} = \sum_{t=1}^{9} \frac{FCFF_t}{(1+TIR)^t} + \frac{TV}{(1+TIR)^9}$$
+
+```{r tir-resultado}
+tir_tab <- tibble(
+  Métrica = c("EV de Mercado", "PV dos FCFFs (a WACC)",
+              "PV do Valor Terminal (a WACC)", "EV Calculado (a WACC)",
+              "Equity Value", "Preço-Alvo Implícito",
+              "TIR Implícita", "Spread TIR − WACC"),
+  Valor = c(
+    sprintf("R$ %.1f bi", modelo$preco_atual * modelo$n_units + modelo$divida_liquida + modelo$outros_passivos),
+    sprintf("R$ %.1f bi", modelo$pv_fcff),
+    sprintf("R$ %.1f bi", modelo$vt_descontado),
+    sprintf("R$ %.1f bi", modelo$ev_calculado),
+    sprintf("R$ %.1f bi", modelo$equity_value),
+    sprintf("R$ %.2f", modelo$preco_alvo),
+    sprintf("%.2f%% a.a.", modelo$tir * 100),
+    sprintf("%.2f p.p.", (modelo$tir - modelo$wacc) * 100)
+  )
+)
+
+kable(tir_tab, format = "latex", booktabs = TRUE,
+      caption = "Resultado do modelo de Fluxo de Caixa Descontado") |>
+  kableExtra::kable_styling(latex_options = c("hold_position", "striped"),
+                            font_size = 10)
+```
+
+# Projeções Financeiras
+
+```{r grafico-receita-ebitda, fig.width=8, fig.height=4}
+df_all <- financeiros |>
+  select(ano, receita_liquida, ebitda_ajustado) |>
+  bind_rows(
+    fluxos |> select(ano, receita, ebitda) |>
+      rename(receita_liquida = receita, ebitda_ajustado = ebitda)
+  ) |>
+  pivot_longer(c(receita_liquida, ebitda_ajustado),
+               names_to = "indicador", values_to = "valor") |>
+  mutate(indicador = ifelse(indicador == "receita_liquida",
+                            "Receita Líquida", "EBITDA Ajustado"))
+
+ggplot(df_all, aes(x = ano, y = valor, fill = indicador)) +
+  geom_col(position = "dodge", width = 0.6) +
+  geom_vline(xintercept = 2025.5, linetype = "dashed", color = "gray50") +
+  scale_fill_manual(values = c("Receita Líquida" = "#2563eb",
+                                "EBITDA Ajustado" = "#f0b429")) +
+  scale_y_continuous(labels = label_number(suffix = " bi", prefix = "R$ ")) +
+  labs(title = "Receita Líquida e EBITDA Ajustado",
+       subtitle = "Histórico + Projeções | R$ bilhões",
+       x = NULL, y = NULL, fill = NULL) +
+  tema_klabin
+```
+
+```{r grafico-fcff, fig.width=8, fig.height=4}
+ggplot(fluxos, aes(x = ano, y = fcff)) +
+  geom_col(fill = "#2dd4bf", width = 0.6) +
+  geom_line(aes(y = fcff_descontado), color = "#ef4444", linewidth = 1) +
+  geom_point(aes(y = fcff_descontado), color = "#ef4444", size = 2) +
+  scale_y_continuous(labels = label_number(suffix = " bi", prefix = "R$ ")) +
+  labs(title = "Fluxo de Caixa Livre (FCFF) — Projetado",
+       subtitle = "Barras: FCFF nominal | Linha: FCFF descontado a WACC",
+       x = NULL, y = NULL) +
+  tema_klabin
+```
+
+```{r tabela-fluxos}
+fluxos_fmt <- fluxos |>
+  mutate(across(c(receita, ebitda, capex, fcff, fcff_descontado),
+                ~sprintf("%.2f", .)),
+         margem_ebitda = sprintf("%.1f%%", margem_ebitda * 100))
+
+kable(fluxos_fmt, format = "latex", booktabs = TRUE,
+      col.names = c("Ano", "Receita", "EBITDA", "Margem", "CAPEX",
+                    "FCFF", "FCFF Desc."),
+      caption = "Projeção de Fluxos de Caixa (R\$ bilhões)") |>
+  kableExtra::kable_styling(latex_options = c("hold_position", "striped", "scale_down"),
+                            font_size = 9)
+```
+
+\newpage
+
+# Comparação com Pares
+
+```{r pares-table}
+pares_fmt <- pares |>
+  mutate(
+    market_cap = sprintf("%.1f", market_cap),
+    ev_ebitda = sprintf("%.1fx", ev_ebitda),
+    pl = sprintf("%.1fx", pl),
+    dl_ebitda = sprintf("%.1fx", dl_ebitda)
+  )
+
+kable(pares_fmt, format = "latex", booktabs = TRUE,
+      col.names = c("Empresa", "Ticker", "Mkt Cap (R$ bi)",
+                    "EV/EBITDA", "P/L", "DL/EBITDA", "Rec."),
+      caption = "Comparação com pares do setor P\&C") |>
+  kableExtra::kable_styling(latex_options = c("hold_position", "striped"),
+                            font_size = 10)
+```
+
+```{r grafico-pares, fig.width=7, fig.height=3.5}
+pares_long <- pares |>
+  select(empresa, ev_ebitda, pl) |>
+  pivot_longer(-empresa, names_to = "multiplo", values_to = "valor") |>
+  mutate(multiplo = ifelse(multiplo == "ev_ebitda", "EV/EBITDA", "P/L"))
+
+ggplot(pares_long, aes(x = reorder(empresa, -valor), y = valor, fill = multiplo)) +
+  geom_col(position = "dodge", width = 0.6) +
+  scale_fill_manual(values = c("EV/EBITDA" = "#2563eb", "P/L" = "#f0b429")) +
+  labs(title = "Múltiplos Comparativos — Pares do Setor",
+       x = NULL, y = "Múltiplo (x)", fill = NULL) +
+  tema_klabin
+```
+
+# Conclusão
+
+Com base no modelo de Fluxo de Caixa Descontado e na análise de múltiplos, o **preço-alvo calculado para KLBN11 é de R\$ `r sprintf("%.2f", modelo$preco_alvo)`**, representando um upside de **`r sprintf("%.1f%%", modelo$upside * 100)`** em relação ao preço atual de R\$ `r sprintf("%.2f", modelo$preco_atual)`.
+
+A **TIR implícita de `r sprintf("%.2f%%", modelo$tir * 100)`** supera o WACC de `r sprintf("%.2f%%", modelo$wacc * 100)`, indicando que a ação negocia com desconto em relação ao seu valor intrínseco pelo modelo de FCD.
+
+---
+
+*Relatório gerado automaticamente em `r format(Sys.time(), "%d/%m/%Y às %H:%M")`. Dados de mercado coletados via API do BCB e Yahoo Finance. Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento.*
+

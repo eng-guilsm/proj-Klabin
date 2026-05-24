@@ -1,0 +1,481 @@
+ KLBN11
+
+
+ KLABIN S.A.
+ Equity Research — Relatório de Valuation Institucional
+
+
+ Papel resiliente em ciclo de commodity, mas alavancagem e CAPEX pesado limitam
+ o upside no curto prazo. Estrutura de embalagens sustentáveis consolida vantagem
+ competitiva de longo prazo.
+
+
+
+       RECOMENDAÇÃO                          PREÇO-ALVO 12M                       UPSIDE POTENCIAL                                RISCO
+
+
+
+
+    COMPRA                                  R$ 24,50                                   +18%                                  MÉDIO
+
+         Setor:                Papel & Celulose / Embalagens                  Data:                 Maio 2025
+
+         Analista:             Company Money Research                         Preço atual:          R$ 20,80
+
+         Fonte:                CVM, RI Klabin, Bloomberg                      Market Cap:           R$ 27,5 bi
+
+
+
+
+COMPANY MONEY — Equity Research | Este relatório é de caráter informativo. Não constitui oferta de compra ou venda de valores mobiliários.   Maio 2025
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       1. VISÃO GERAL DA EMPRESA
+
+       A Klabin S.A. é a maior produtora e exportadora de papéis para embalagens do Brasil, com operações integradas que
+       abrangem florestas de eucalipto e pinus, fábricas de celulose, papéis kraftliner, papelão ondulado e sacos industriais.
+       Fundada em 1899, a companhia possui mais de 125 anos de história e opera hoje como uma das empresas de
+       embalagens mais verticalizadas do mundo em território nacional.
+
+
+       Sede                                    São Paulo, SP — Brasil
+
+       Fundação                                1899 (125 anos de operação)
+
+       Ação                                    KLBN11 (Units) — B3 Novo Mercado
+
+       Market Cap                              ~R$ 27,5 bilhões (mai/2025)
+
+       CEO                                     Cristiano Teixeira (desde 2013)
+
+       Funcionários                            ~17.000 diretos
+
+       Capacidade                              ~1,6 Mtpa celulose + ~2,0 Mtpa papéis
+
+       Cobertura Florestal                     ~570 mil ha (áreas próprias e parceiras)
+
+       Exportações                             ~45% da receita
+
+       Rating ESG                              CDP A- | ISE B3 | Índice de Sustentabilidade
+
+
+
+       MODELO DE NEGÓCIOS E VANTAGENS COMPETITIVAS
+
+       O modelo integrado da Klabin — da floresta ao produto final — garante captura de valor em toda a cadeia e reduz a
+       dependência de insumos externos. A empresa opera o Projeto Puma (fases I e II), que representa o maior investimento
+       privado da história do Paraná e eleva a capacidade de celulose fluff e kraftliner. Os diferenciais estruturais incluem:
+
+          • Diversificação de produtos: único player brasileiro com exposição simultânea a celulose, kraftliner, caixas de
+          papelão e sacos industriais.
+          • Integração florestal: ciclo de 7 anos para eucalipto e 14 anos para pinus, reduzindo custo-caixa e gerando créditos
+          de carbono.
+          • Acesso a capital externo: emissões em USD/EUR (bonds e CRA) com custo competitivo, dada a geração de caixa
+          em moeda estrangeira via exportações.
+          • Posicionamento ESG: líder setorial em sustentabilidade no Brasil, fator crescente de alocação entre fundos
+          internacionais.
+
+
+
+       ESTRUTURA ACIONÁRIA
+
+                                        Acionista                                  Tipo                      % ON                 % Total
+
+                       Família Klabin (herdeiros)                              Controlador                   ~51%                  ~30%
+
+                       Fundos Nacionais (BNDESPAR, Previ,
+                                                                               Institucional                 ~18%                  ~11%
+                       etc.)
+
+                       Investidores Estrangeiros                               Institucional                 ~22%                  ~13%
+
+                       Free Float (demais)                                     Pulverizado                    ~9%                  ~46%
+       Fonte: Klabin RI, B3 — dados aproximados mai/2025.
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 1
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       2. ANÁLISE FINANCEIRA HISTÓRICA
+
+       A Klabin reportou forte crescimento de receita entre 2020 e 2022, impulsionado pelo ciclo favorável de commodities e pela
+       entrada em operação da Unidade Puma I. O exercício de 2023 marcou uma desaceleração, com queda de preços no
+       mercado de celulose e contração de margens. Em 2024, a recuperação parcial de preços e a diluição de custos fixos via
+       Puma II sustentaram a retomada da margem EBITDA.
+
+
+                           Indicador (R$ bi)               2020           2021           2022           2023           2024E             2025E
+
+                      Receita Líquida                      13,0           17,8           22,0           21,3            22,8             24,5
+
+                      EBITDA Ajustado                       3,6            6,2            8,2            6,9             7,6              8,4
+
+                      Margem EBITDA (%)                   27,7%          34,8%          37,3%          32,4%           33,3%             34,3%
+
+                      Lucro Líquido                         0,4            1,8            3,1            0,7             1,2              1,9
+
+                      CAPEX                                (3,2)          (4,8)          (5,1)          (3,9)           (3,5)            (3,2)
+
+                      Dívida Líquida                       14,8           19,9           28,7           28,4            28,8             27,0
+
+                      DL / EBITDA (x)                      4,1x           3,2x           3,5x            4,1x           3,8x             3,2x
+
+                      FCF (pré-CAPEX)                       2,9            5,1            6,8            5,4             5,8              7,1
+       Fonte: Klabin RI, CVM, estimativas Company Money Research. E = estimado.
+
+
+
+
+                          Gráfico 1 — Receita Líquida e EBITDA Ajustado (R$ bilhões) | Fonte: Klabin RI, estimativas Company Money.
+
+
+
+
+       PONTOS DE ATENÇÃO NOS RESULTADOS
+
+          • CAPEX intensivo: o ciclo de investimentos do Projeto Puma consumiu >R$ 20 bi entre 2018–2023, comprimindo o
+          free cash flow e elevando a alavancagem.
+          • Lucro líquido volátil: resultado final é amplamente afetado por variação cambial sobre a dívida em USD/EUR,
+          distorcendo a percepção de rentabilidade real.
+          • Dividend yield comprimido: política de distribuição de 15% do EBITDA resulta em yields historicamente abaixo de
+          4% a.a. — pouco atrativo para estratégia de renda.
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 2
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       3. DRIVERS DE MERCADO E RISCOS
+
+       Catalisadores de Alta
+       Recuperação do preço da celulose
+       O benchmark BHKP (China CFR) permanece em recuperação após o ciclo baixista de 2023. Nossa projeção embute
+       ~US$ 600/t em 2025E vs. US$ 545/t em 2024. Cada US$ 10/t de variação impacta em ~R$ 120 mi no EBITDA.
+
+       Crescimento do segmento de embalagens
+       O mercado de papelão ondulado cresce acima do PIB no Brasil (+4–6% a.a.). A verticalização da Klabin permite capturar
+       margens superiores neste segmento vs. venda de commodity pura.
+
+       Desalavancagem gradual
+       A fase de CAPEX intenso foi concluída com o Puma II. A companhia projeta DL/EBITDA de 3,0–3,5x até 2026, liberando
+       espaço para retorno de capital.
+
+       Benefício cambial
+       Com ~45% da receita em USD/EUR, a depreciação do BRL constitui hedge natural parcial, favorecendo margens em
+       cenário de real mais fraco.
+
+       Vantagem ESG crescente
+       Certificações FSCTM e emissões de Green Bonds viabilizam funding internacional mais barato — custo médio da dívida
+       em USD de ~5,8% a.a.
+
+
+
+       Riscos e Fatores de Preocupação
+       ALTO | Alavancagem estrutural elevada
+       A dívida líquida de ~R$ 28,8 bi equivale a 3,8x EBITDA — acima da maioria dos pares globais. Em cenário de alta de juros
+       ou queda abrupta de preços de celulose, o serviço da dívida pode comprometer o FCF.
+
+       ALTO | Concentração geográfica de exportações
+       China representa ~35% das exportações de celulose. Desaceleração da demanda chinesa por papel tissue ou
+       embalagens tem impacto direto e imediato no mix de receita.
+
+       MÉDIO | Variação cambial sobre a dívida
+       Com ~70% da dívida bruta denominada em USD/EUR, a apreciação do dólar gera perdas financeiras que distorcem o
+       resultado contábil, afastando investidores de renda fixa.
+
+       MÉDIO | Risco hídrico e climático
+       Eventos de seca severa (La Niña) podem comprometer a produtividade florestal nas regiões Sul e Sudeste, afetando
+       custos de madeira e geração de energia hidráulica.
+
+       BAIXO | Risco regulatório ambiental
+       Possível endurecimento de normas de uso de terra e licenciamento ambiental no Brasil pode elevar custos de compliance
+       e retardar expansões futuras.
+
+
+
+       ANÁLISE DE SENSIBILIDADE — EBITDA 2025E
+
+       A tabela abaixo mostra o impacto no EBITDA estimado 2025E em função de variações nos dois principais vetores: preço
+       da celulose e câmbio USD/BRL.
+
+                              BHKP (US$/t) \
+                                                             R$ 5,00               R$ 5,50                R$ 6,00               R$ 6,50
+                                USD/BRL
+
+                         US$ 500/t                           R$ 6,8 bi             R$ 7,2 bi             R$ 7,6 bi             R$ 8,0 bi
+
+                         US$ 560/t                           R$ 7,4 bi             R$ 7,9 bi             R$ 8,4 bi             R$ 8,9 bi
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 3
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+                              BHKP (US$/t) \
+                                                             R$ 5,00               R$ 5,50                R$ 6,00               R$ 6,50
+                                USD/BRL
+
+                         US$ 620/t                           R$ 8,0 bi             R$ 8,6 bi             R$ 9,1 bi             R$ 9,7 bi
+
+                         US$ 680/t                           R$ 8,7 bi             R$ 9,3 bi             R$ 9,9 bi            R$ 10,4 bi
+       Premissa base: BHKP US$ 600/t | USD/BRL R$ 5,80 | Estimativa Company Money Research.
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 4
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       4. VALUATION — FCD E MÚLTIPLOS DE MERCADO
+
+          Metodologia de Valuation
+
+          Utilizamos duas abordagens complementares: (i) Fluxo de Caixa Descontado (FCD) pelo método do capital investido
+          (FCFF), que captura o valor intrínseco independente da estrutura de capital; e (ii) Múltiplos de mercado (EV/EBITDA e
+          P/L), para calibrar o preço-alvo em relação aos pares do setor. O preço-alvo final pondera 60% FCD e 40% múltiplos.
+
+
+
+       4.1 FLUXO DE CAIXA DESCONTADO (FCD)
+
+       WACC                                                     10,2% a.a. (Ke: 13,1% | Kd: 7,8% | D/(D+E): 45%)
+
+       Taxa de Crescimento na Perpetuidade (g)                  3,5% a.a. (PIB nominal conservador)
+
+       Período de Projeção Explícita                            10 anos (2025E–2034E)
+
+       Câmbio Médio Projetado                                   R$ 5,80/USD (2025) → R$ 5,50/USD (longo prazo)
+
+       Preço BHKP (base)                                        US$ 600/t (2025E) → US$ 580/t (longo prazo)
+
+       Margem EBITDA Normalizada                                33–35% no período de projeção
+
+       CAPEX / Receita (pós-Puma II)                            ~13–15% (manutenção + expansões menores)
+
+       Valor da Firma (EV calculado)                            ~R$ 57,2 bilhões
+
+       (–) Dívida Líquida                                       (R$ 28,8 bilhões)
+
+       (–) Outros Passivos e Minoritários                       (R$ 2,3 bilhões)
+
+       Equity Value                                             R$ 26,1 bilhões
+
+       Preço-Alvo FCD (por unit KLBN11)                         R$ 24,80
+
+
+
+       4.2 VALUATION POR MÚLTIPLOS
+
+                                   Métrica                Klabin 2024A           Klabin 2025E          Média Setor          Implied Price
+
+                         EV/EBITDA                             7,2x                  6,5x                   7,8x                R$ 25,90
+
+                         P/L                                   14,5x                 11,2x                 15,0x                R$ 23,80
+
+                         EV/Receita                            2,4x                  2,2x                   2,6x                R$ 25,10
+
+                         P/FCF (pré-CAPEX)                     8,1x                  7,3x                   9,0x                R$ 23,40
+       Média dos implied prices por múltiplos: R$ 24,55. Fonte: Bloomberg, Company Money.
+
+
+
+       4.3 COMPOSIÇÃO DO PREÇO-ALVO
+
+                                        Metodologia                       Peso              Preço Implied             Contribuição
+
+                               FCD (FCFF)                                 60%                 R$ 24,80                  R$ 14,88
+
+                               Múltiplos (média)                          40%                 R$ 24,55                   R$ 9,82
+
+                               Preço-Alvo Final                           100%                R$ 24,50                      —
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 5
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       Upside de ~18% em relação ao preço de mercado de R$ 20,80 (mai/2025). O horizonte de realização é de 12 meses,
+       condicionado à recuperação do ciclo de celulose e à execução do plano de desalavancagem.
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 6
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       EVOLUÇÃO DA ALAVANCAGEM
+
+
+
+
+                            Gráfico 2 — Dívida Líquida / EBITDA histórico e projetado | Fonte: Klabin RI, estimativas Company Money.
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 7
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       5. COMPARAÇÃO COM PARES
+
+       Comparamos a Klabin com o universo de pares do setor de papel e celulose, considerando empresas com operações
+       integradas ou de embalagens, listadas em bolsa ou com dados públicos disponíveis. A seleção inclui Suzano, Irani,
+       Eldorado e CMPC (Chile).
+
+
+                                                            Market Cap (R$
+                     Empresa                Ticker                                 EV/EBITDA 24E            P/L 24E         DL/EBITDA     Rec.
+                                                                 bi)
+
+             Klabin                        KLBN11                 27,5                    7,2x               14,5x              3,8x     COMPRA
+
+             Suzano                        SUZB3                  68,4                    8,1x               18,2x              3,2x     NEUTRO
+
+             Irani                          RANI3                  2,8                    5,8x               11,0x              1,9x     COMPRA
+
+             Eldorado                      Privada                 N/D                    6,5x                N/A               4,5x       —
+
+             CMPC                        BVL:CMPC                 22,1                    7,8x               16,0x              2,8x     NEUTRO
+
+             Média Pares                       —                   —                      7,1x               15,1x              3,2x       —
+       Fonte: Bloomberg, RI das companhias, Company Money Research. Dados mai/2025.
+
+
+
+
+                               Gráfico 3 — Múltiplos EV/EBITDA e P/L comparativo de pares | Fonte: Bloomberg, Company Money.
+
+
+
+
+       POSICIONAMENTO RELATIVO
+
+       EV/EBITDA                      Klabin negocia com desconto de ~11% vs. Suzano e em linha com a média de pares. O desconto
+                                      reflete alavancagem maior e menor liquidez da ação.
+
+       P/L                            O P/L mais baixo vs. Suzano é parcialmente explicado pela volatilidade do lucro líquido em
+                                      função da marcação da dívida em USD. Ajustado por variação cambial, o múltiplo converge.
+
+       DL/EBITDA                      Alavancagem acima da média do setor é o principal fator de restrição do valuation. A
+                                      convergência para 3,0–3,5x nos próximos 2 anos é condição sine qua non para reavaliação do
+                                      papel.
+
+       Liquidez                       KLBN11 tem volume médio diário de ~R$ 90 mi — menor que SUZB3 (~R$ 350 mi), o que gera
+                                      bid-ask spread relevante e limita alocações de fundos de grande porte.
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.             Pág. 8
+
+KLABIN S.A. | KLBN11                                                                                                     EQUITY RESEARCH | COMPANY MONEY
+
+
+
+
+       6. CONCLUSÃO E RECOMENDAÇÃO
+
+       Após análise integrada de fundamentos, valuation, posicionamento de mercado e riscos, reiteramos a recomendação de
+       COMPRA para KLBN11 com preço-alvo de R$ 24,50 em 12 meses, representando upside de ~18% em relação ao preço
+       atual de R$ 20,80.
+
+
+
+                                                                Preço-Alvo
+        KLBN11 — COMPRA                                                                          Upside +18%                      Risco MÉDIO
+                                                               12M R$ 24,50
+
+
+       TESE DE INVESTIMENTO
+
+       Favorável — Fundamentos de Longo Prazo Sólidos
+       A Klabin é a empresa mais diversificada do setor de papel no Brasil, com vantagens competitivas estruturais em
+       integração florestal, acesso a capital internacional e posicionamento ESG. O ciclo de CAPEX mais intenso ficou para trás
+       com o Puma II, abrindo espaço para geração de caixa livre crescente.
+
+       Cautela — Alavancagem como Restritor de Curto Prazo
+       O nível de endividamento de 3,8x DL/EBITDA é o principal fator de contenção. Em um cenário de juros elevados no Brasil
+       (Selic > 12%) e dólar volátil, o custo financeiro comprime o FCF disponível para acionistas e limita o dividend yield.
+
+       Catalisador Principal — Preço da Celulose
+       A trajetória do BHKP é o driver mais crítico para a tese. Nossa premissa de US$ 600/t em 2025E parece razoável, mas
+       riscos de demanda chinesa abaixo do esperado podem pressionar o papel. Monitoramos mensalmente os índices FOEX e
+       Hawkins Wright.
+
+       Janela de Entrada Atrativa
+       Com o papel negociando a 6,5x EV/EBITDA 2025E — desconto de ~17% vs. seu histórico de 7,8x — e com a empresa no
+       início do ciclo de desalavancagem, o risco/retorno nos 12 meses à frente é favorável para investidores com horizonte
+       adequado.
+
+
+
+       MONITORAMENTO — GATILHOS PARA REVISÃO DA RECOMENDAÇÃO
+
+                                     Evento / Indicador                      Direção                       Impacto Esperado
+
+                         BHKP > US$ 650/t por 2 trimestres                    ▲ Alta                Revisão de PT para R$ 27,00+
+
+                         DL/EBITDA < 3,0x até 2026                            ▲ Alta                Reavaliação positiva do múltiplo
+
+                         BHKP < US$ 500/t por 2 trimestres                   ▼ Baixa                 Rebaixamento para NEUTRO
+
+                         Novo ciclo de CAPEX relevante (>R$ 8
+                                                                             ▼ Baixa           Revisão de PT e potencial rebaixamento
+                         bi)
+
+                         Apreciação do BRL para < R$
+                                                                             ▼ Baixa              Compressão de receita exportação
+                         4,80/USD
+
+                         Selic acima de 15% a.a.                             ▼ Baixa              Aumento do WACC; pressão no PT
+
+
+
+       DISCLAIMER: Este relatório foi elaborado pela equipe Company Money Research com fins exclusivamente informativos e educacionais. As informações aqui
+       contidas são baseadas em fontes públicas consideradas confiáveis (CVM, B3, RI Klabin, Bloomberg), mas não garantimos sua exatidão ou completude. Este
+       documento não constitui oferta, solicitação ou recomendação de compra ou venda de quaisquer valores mobiliários. Investimentos em renda variável
+       envolvem riscos e podem resultar em perda do capital investido. Consulte seu assessor de investimentos antes de tomar qualquer decisão. Company Money
+       não é registrada como analista de valores mobiliários na CVM.
+
+
+
+
+Este relatório tem caráter exclusivamente informativo e não constitui recomendação de investimento. Fontes: CVM, RI Klabin, Bloomberg.                    Pág. 9
+
