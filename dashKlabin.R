@@ -149,7 +149,28 @@ ui <- page_navbar(
               style = "font-weight: 300; opacity: 0.8; font-size: 0.85em;")
   ),
   theme = tema_dash,
-  fillable = TRUE,
+  fillable = FALSE,
+
+  header = tags$head(
+    tags$style(HTML("
+      /* Tornar os títulos do header e abas de navegação muito claros e fáceis de ler */
+      .navbar { background-color: #1a2742 !important; }
+      .navbar-title, .navbar-brand, .navbar-brand strong { color: #ffffff !important; }
+      .nav-link { color: #cbd5e1 !important; font-weight: 500; }
+      .nav-link:hover { color: #f0b429 !important; }
+      .nav-link.active { color: #ffffff !important; font-weight: bold; border-bottom: 2px solid #f0b429 !important; }
+      
+      /* Estilo para evitar que as tabelas sumam no canto da tela */
+      .dataTables_wrapper { width: 100% !important; margin: 0 auto !important; padding: 10px !important; }
+      table.dataTable { width: 100% !important; margin: 0 auto !important; }
+      
+      /* Ajuste de margens de cartões */
+      .card { margin-bottom: 15px !important; }
+      
+      /* Ajustes extras para layout responsivo */
+      body { overflow-y: auto !important; }
+    "))
+  ),
 
   # ── Aba 1: Painel Geral ──────────────────────────────────────────────────
 
@@ -225,15 +246,16 @@ ui <- page_navbar(
     ),
 
     layout_columns(
-      col_widths = c(7, 5),
+      col_widths = c(6, 6),
+      fill = FALSE,
 
       card(
         card_header("Receita Líquida e EBITDA Ajustado (R$ bilhões)"),
-        plotlyOutput("plot_receita_ebitda", height = "350px")
+        plotlyOutput("plot_receita_ebitda", height = "400px")
       ),
       card(
         card_header("Evolução das Margens (%)"),
-        plotlyOutput("plot_margens", height = "350px")
+        plotlyOutput("plot_margens", height = "400px")
       )
     ),
 
@@ -249,15 +271,13 @@ ui <- page_navbar(
     title = "Valuation",
     icon  = bs_icon("calculator"),
 
-    layout_columns(
-      col_widths = c(4, 8),
+    layout_sidebar(
+      fillable = FALSE,
+      sidebar = sidebar(
+        width = "350px",
+        title = tags$span(bs_icon("sliders"), " Premissas do Modelo", style = "font-weight: bold; color: #ffffff;"),
+        bg = "#1e2d47",
 
-      # Painel de controles (sliders)
-      card(
-        card_header(
-          tags$span(bs_icon("sliders"), " Premissas do Modelo",
-                    style = "font-weight: bold;")
-        ),
         sliderInput("beta_input", "Beta",
                     min = 0.50, max = 1.50, value = round(modelo$beta, 2),
                     step = 0.05),
@@ -283,13 +303,13 @@ ui <- page_navbar(
         hr(),
         tags$p(tags$small(
           "Kd pré-IR fixo em 7.8% (custo médio da dívida Klabin).",
-          style = paste0("color:", cores$text_muted, ";")
+          style = "color: #94a3b8;"
         )),
         actionButton("btn_reset", "Restaurar Padrões",
                      class = "btn-outline-warning btn-sm w-100")
       ),
 
-      # Resultados do modelo
+      # Conteúdo Principal à Direita
       layout_columns(
         col_widths = c(4, 4, 4),
         fill = FALSE,
@@ -340,6 +360,7 @@ ui <- page_navbar(
 
       layout_columns(
         col_widths = c(6, 6),
+        fill = FALSE,
 
         card(
           card_header("Sensibilidade WACC — Beta × Selic"),
@@ -347,7 +368,7 @@ ui <- page_navbar(
         ),
         card(
           card_header("Fluxos de Caixa Projetados"),
-          plotlyOutput("plot_fcff", height = "300px")
+          plotlyOutput("plot_fcff", height = "350px")
         )
       )
     )
@@ -534,24 +555,20 @@ server <- function(input, output, session) {
   # ── Gráficos do Painel Geral ──────────────────────────────────────────
 
   output$plot_receita_ebitda <- renderPlotly({
-    plot_ly(financeiros, x = ~ano) |>
-      add_bars(y = ~receita_liquida, name = "Receita",
-               marker = list(color = cores$blue), width = 0.35,
-               offset = -0.18) |>
-      add_bars(y = ~ebitda_ajustado, name = "EBITDA",
-               marker = list(color = cores$gold), width = 0.35,
-               offset = 0.18) |>
+    plot_ly(financeiros, x = ~ano, y = ~receita_liquida, type = "bar", name = "Receita",
+            marker = list(color = cores$blue)) |>
+      add_trace(y = ~ebitda_ajustado, type = "bar", name = "EBITDA",
+                marker = list(color = cores$gold)) |>
       plotly_layout_dark(yaxis_title = "R$ bilhões") |>
+      layout(barmode = 'group') |>
       config(displayModeBar = FALSE)
   })
 
   output$plot_margens <- renderPlotly({
-    plot_ly(financeiros, x = ~ano) |>
-      add_lines(y = ~margem_ebitda, name = "Margem EBITDA (%)",
-                line = list(color = cores$teal, width = 3)) |>
-      add_markers(y = ~margem_ebitda, name = "",
-                  marker = list(color = cores$teal, size = 8),
-                  showlegend = FALSE) |>
+    plot_ly(financeiros, x = ~ano, y = ~margem_ebitda, type = "scatter", mode = "lines+markers",
+            line = list(color = cores$teal, width = 3),
+            marker = list(color = cores$teal, size = 8),
+            name = "Margem EBITDA (%)") |>
       plotly_layout_dark(yaxis_title = "%") |>
       config(displayModeBar = FALSE)
   })
@@ -591,15 +608,16 @@ server <- function(input, output, session) {
 
   output$tabela_sensibilidade_wacc <- renderDT({
     # Gerar tabela de sensibilidade Beta × Selic
-    betas <- seq(0.60, 1.20, by = 0.15)
+    betas <- round(seq(0.60, 1.20, by = 0.15), 3)
     selics <- seq(10, 16, by = 1.5)
 
     sens <- expand.grid(Beta = betas, Selic = selics) |>
       mutate(
+        Beta = round(Beta, 3),
         Ke = Selic / 100 + Beta * (input$erp_input / 100) + (input$crp_input / 100),
         Kd_post = 0.078 * (1 - input$tax_input / 100),
         WACC = (1 - input$de_input / 100) * Ke + (input$de_input / 100) * Kd_post,
-        WACC_fmt = sprintf("%.1f%%", WACC * 100)
+        WACC_fmt = sprintf("%.2f%%", WACC * 100)
       ) |>
       select(Beta, Selic, WACC_fmt) |>
       pivot_wider(names_from = Selic, values_from = WACC_fmt,
