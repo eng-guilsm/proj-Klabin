@@ -449,6 +449,7 @@ server <- function(input, output, session) {
   # ── Modelo reativo (recalcula a cada mudança de slider) ────────────────
 
   modelo_reativo <- reactive({
+    req(input$beta_input, input$selic_input, input$erp_input, input$crp_input, input$de_input, input$tax_input, input$g_input)
     # Inputs
     beta_r   <- input$beta_input
     rf_r     <- input$selic_input / 100
@@ -566,8 +567,8 @@ server <- function(input, output, session) {
 
   output$plot_margens <- renderPlotly({
     plot_ly(financeiros, x = ~ano, y = ~margem_ebitda, type = "scatter", mode = "lines+markers",
-            line = list(color = cores$teal, width = 3),
-            marker = list(color = cores$teal, size = 8),
+            line = list(color = "#2dd4bf", width = 3),
+            marker = list(color = "#2dd4bf", size = 8),
             name = "Margem EBITDA (%)") |>
       plotly_layout_dark(yaxis_title = "%") |>
       config(displayModeBar = FALSE)
@@ -597,16 +598,15 @@ server <- function(input, output, session) {
         )
       ),
       rownames = FALSE,
-      class = "compact stripe"
-    ) |>
-      formatStyle(columns = 1:10,
-                  backgroundColor = cores$bg_card,
-                  color = cores$text_primary)
+      class = "table table-striped table-hover table-bordered table-sm"
+    )
   })
 
   # ── Gráficos da aba Valuation ─────────────────────────────────────────
 
   output$tabela_sensibilidade_wacc <- renderDT({
+    req(input$erp_input, input$crp_input, input$tax_input, input$de_input)
+    
     # Gerar tabela de sensibilidade Beta × Selic
     betas <- round(seq(0.60, 1.20, by = 0.15), 3)
     selics <- seq(10, 16, by = 1.5)
@@ -630,11 +630,8 @@ server <- function(input, output, session) {
                        list(className = "dt-center", targets = "_all")
                      )),
       rownames = FALSE,
-      class = "compact stripe"
-    ) |>
-      formatStyle(columns = 1:ncol(sens),
-                  backgroundColor = cores$bg_card,
-                  color = cores$text_primary)
+      class = "table table-striped table-hover table-bordered table-sm"
+    )
   })
 
   output$plot_fcff <- renderPlotly({
