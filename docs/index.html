@@ -1,28 +1,1071 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shiny App</title>
-    <script
-      src="./shinylive/load-shinylive-sw.js"
-      type="module"
-    ></script>
-    <script type="module">
-      import { runExportedApp } from "./shinylive/shinylive.js";
-      runExportedApp({
-        id: "root",
-        appEngine: "r",
-        relPath: "",
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KLABIN S.A. | KLBN11 — Dashboard de Valuation</title>
+  
+  <!-- Bootstrap 5 CSS Dark Preset -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts - Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Plotly JS via CDN -->
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a1628;
+      --bg-secondary: #1a2742;
+      --bg-card: #1e2d47;
+      --gold: #f0b429;
+      --teal: #2dd4bf;
+      --blue: #3b82f6;
+      --amber: #fbbf24;
+      --red: #ef4444;
+      --green: #22c55e;
+      --text-primary: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      overflow-y: auto;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Custom Header/Navbar */
+    .navbar {
+      background-color: var(--bg-secondary) !important;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+    .navbar-brand {
+      color: #ffffff !important;
+      font-weight: 700;
+    }
+    .navbar-brand span {
+      font-weight: 300;
+      opacity: 0.85;
+      font-size: 0.85em;
+    }
+    .nav-link {
+      color: var(--text-muted) !important;
+      font-weight: 500;
+      margin-left: 15px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-link:hover {
+      color: var(--gold) !important;
+    }
+    .nav-link.active {
+      color: #ffffff !important;
+      font-weight: bold;
+      border-bottom: 2px solid var(--gold) !important;
+    }
+
+    /* Custom Cards & Glassmorphism */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .card-header {
+      background-color: rgba(26, 39, 66, 0.5);
+      border-bottom: 1px solid var(--border);
+      color: #ffffff;
+      font-weight: 600;
+      padding: 15px;
+      border-radius: 12px 12px 0 0 !important;
+    }
+
+    /* Value Boxes Styling */
+    .value-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 120px;
+      transition: transform 0.2s ease;
+    }
+    .value-box:hover {
+      transform: translateY(-2px);
+    }
+    .value-box .vb-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .value-box .vb-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 5px;
+    }
+    .value-box .vb-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+    .value-box .vb-icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.8rem;
+      opacity: 0.15;
+    }
+
+    /* Color themes for value boxes */
+    .vb-primary { border-left: 4px solid var(--blue); }
+    .vb-info { border-left: 4px solid var(--teal); }
+    .vb-warning { border-left: 4px solid var(--gold); }
+    .vb-success { border-left: 4px solid var(--green); }
+    .vb-danger { border-left: 4px solid var(--red); }
+
+    /* Custom Sidebar */
+    .sidebar-panel {
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .form-label {
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .form-label span {
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .form-range {
+      height: 6px;
+      background: var(--border);
+    }
+    .form-range::-webkit-slider-thumb {
+      background: var(--gold);
+    }
+
+    /* Tab Content management */
+    .tab-content {
+      display: none;
+      padding: 20px 0;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Styled Tables */
+    .table {
+      color: var(--text-primary) !important;
+      margin-bottom: 0;
+    }
+    .table th {
+      background-color: rgba(26, 39, 66, 0.7) !important;
+      color: #ffffff !important;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border) !important;
+      text-align: center;
+    }
+    .table td {
+      background-color: var(--bg-card) !important;
+      border-bottom: 1px solid var(--border) !important;
+      vertical-align: middle;
+      text-align: center;
+    }
+    .table-striped tbody tr:nth-of-type(odd) td {
+      background-color: rgba(33, 49, 78, 0.4) !important;
+    }
+
+    /* Footer styling */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px;
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header / Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand">
+        <i class="bi bi-box-seam text-warning"></i> <strong>KLABIN S.A.</strong> <span>| KLBN11 — Valuation Inteligente</span>
+      </a>
+      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="bi bi-list fs-3"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" onclick="switchTab('tab-painel', this)"><i class="bi bi-speedometer2"></i> Painel Geral</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="switchTab('tab-valuation', this)"><i class="bi bi-calculator"></i> Valuation (Simulador)</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="switchTab('tab-viz', this)"><i class="bi bi-bar-chart-line"></i> Visualizações</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Container Principal -->
+  <div class="container-fluid py-4 px-4">
+    
+    <!-- ================== ABA 1: PAINEL GERAL ================== -->
+    <div id="tab-painel" class="tab-content active">
+      
+      <!-- Value Boxes Row 1 -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-primary">
+            <span class="vb-title">Receita Líquida 2025E</span>
+            <span class="vb-value">R$ 24,5 bi</span>
+            <span class="vb-subtitle">+7.4% vs 2024E</span>
+            <i class="bi bi-cash-stack vb-icon"></i>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-info">
+            <span class="vb-title">EBITDA Ajustado 2025E</span>
+            <span class="vb-value">R$ 8,4 bi</span>
+            <span class="vb-subtitle">Margem: 34,3%</span>
+            <i class="bi bi-graph-up-arrow vb-icon"></i>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-warning">
+            <span class="vb-title">Preço-Alvo 12M</span>
+            <span class="vb-value" id="box-preco-alvo-1">R$ 24,50</span>
+            <span class="vb-subtitle" id="box-upside-1">Upside: +48.8%</span>
+            <i class="bi bi-bullseye vb-icon"></i>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-success">
+            <span class="vb-title">DL / EBITDA</span>
+            <span class="vb-value">3,2x</span>
+            <span class="vb-subtitle">Meta: 3.0x–3.5x</span>
+            <i class="bi bi-shield-check vb-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Value Boxes Row 2 -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-primary">
+            <span class="vb-title">Lucro Líquido 2025E</span>
+            <span class="vb-value">R$ 1,9 bi</span>
+            <span class="vb-subtitle">vs R$ 1,2 bi em 2024E</span>
+            <i class="bi bi-piggy-bank vb-icon"></i>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-danger">
+            <span class="vb-title">Dívida Líquida 2025E</span>
+            <span class="vb-value">R$ 27,0 bi</span>
+            <span class="vb-subtitle">Redução de R$ 1,8 bi</span>
+            <i class="bi bi-bank vb-icon"></i>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-info">
+            <span class="vb-title">WACC Estimado</span>
+            <span class="vb-value" id="box-wacc-1">13,80%</span>
+            <span class="vb-subtitle">Custo Médio Ponderado</span>
+            <i class="bi bi-percent vb-icon"></i>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="value-box vb-success">
+            <span class="vb-title">TIR Implícita</span>
+            <span class="vb-value" id="box-tir-1">9,10%</span>
+            <span class="vb-subtitle" id="box-spread-1">Spread: -4.70 p.p.</span>
+            <i class="bi bi-arrow-up-right-circle vb-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="row mb-4">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-bar-chart"></i> Receita Líquida e EBITDA Ajustado (R$ bilhões)</div>
+            <div class="card-body">
+              <div id="chart-receita-ebitda" style="height: 400px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-graph-up"></i> Evolução das Margens EBITDA (%)</div>
+            <div class="card-body">
+              <div id="chart-margens" style="height: 400px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Row -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-table"></i> Dados Financeiros Históricos e Estimados (R$ bilhões)</div>
+            <div class="card-body table-responsive">
+              <table class="table table-striped table-hover table-bordered table-sm align-middle">
+                <thead>
+                  <tr>
+                    <th>Ano</th>
+                    <th>Tipo</th>
+                    <th>Receita</th>
+                    <th>EBITDA</th>
+                    <th>Margem</th>
+                    <th>Lucro Líq.</th>
+                    <th>CAPEX</th>
+                    <th>Dív. Líq.</th>
+                    <th>DL/EBITDA</th>
+                    <th>FCF</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>2020</td><td>Real</td><td>13.0</td><td>3.6</td><td>27.7%</td><td>0.4</td><td>-3.2</td><td>14.8</td><td>4.1x</td><td>2.9</td></tr>
+                  <tr><td>2021</td><td>Real</td><td>17.8</td><td>6.2</td><td>34.8%</td><td>1.8</td><td>-4.8</td><td>19.9</td><td>3.2x</td><td>5.1</td></tr>
+                  <tr><td>2022</td><td>Real</td><td>22.0</td><td>8.2</td><td>37.3%</td><td>3.1</td><td>-5.1</td><td>28.7</td><td>3.5x</td><td>6.8</td></tr>
+                  <tr><td>2023</td><td>Real</td><td>21.3</td><td>6.9</td><td>32.4%</td><td>0.7</td><td>-3.9</td><td>28.4</td><td>4.1x</td><td>5.4</td></tr>
+                  <tr><td>2024</td><td>Est.</td><td>22.8</td><td>7.6</td><td>33.3%</td><td>1.2</td><td>-3.5</td><td>28.8</td><td>3.8x</td><td>5.8</td></tr>
+                  <tr><td>2025</td><td>Est.</td><td>24.5</td><td>8.4</td><td>34.3%</td><td>1.9</td><td>-3.2</td><td>27.0</td><td>3.2x</td><td>7.1</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================== ABA 2: VALUATION SIMULADOR ================== -->
+    <div id="tab-valuation" class="tab-content">
+      <div class="row">
+        
+        <!-- Sidebar Controles -->
+        <div class="col-12 col-lg-4 mb-4">
+          <div class="sidebar-panel">
+            <h5 class="mb-4 text-white"><i class="bi bi-sliders text-warning"></i> Premissas do Modelo</h5>
+            
+            <!-- Sliders -->
+            <div class="mb-4">
+              <label for="slide-beta" class="form-label">Beta KLBN11 <span id="val-beta">0.60</span></label>
+              <input type="range" class="form-range" id="slide-beta" min="0.50" max="1.50" step="0.01" value="0.60" oninput="updateValuation()">
+            </div>
+            
+            <div class="mb-4">
+              <label for="slide-selic" class="form-label">Taxa Selic / Rf <span id="val-selic">14.50%</span></label>
+              <input type="range" class="form-range" id="slide-selic" min="8.0" max="18.0" step="0.25" value="14.50" oninput="updateValuation()">
+            </div>
+
+            <div class="mb-4">
+              <label for="slide-erp" class="form-label">Prêmio de Risco ERP <span id="val-erp">6.50%</span></label>
+              <input type="range" class="form-range" id="slide-erp" min="4.0" max="10.0" step="0.1" value="6.50" oninput="updateValuation()">
+            </div>
+
+            <div class="mb-4">
+              <label for="slide-crp" class="form-label">Country Risk Premium (CRP) <span id="val-crp">2.50%</span></label>
+              <input type="range" class="form-range" id="slide-crp" min="1.0" max="5.0" step="0.1" value="2.50" oninput="updateValuation()">
+            </div>
+
+            <div class="mb-4">
+              <label for="slide-de" class="form-label">Dívida / (Dívida + PL) <span id="val-de">45.0%</span></label>
+              <input type="range" class="form-range" id="slide-de" min="30.0" max="60.0" step="1.0" value="45.0" oninput="updateValuation()">
+            </div>
+
+            <div class="mb-4">
+              <label for="slide-tax" class="form-label">Alíquota IR / CSLL <span id="val-tax">34.0%</span></label>
+              <input type="range" class="form-range" id="slide-tax" min="25.0" max="40.0" step="1.0" value="34.0" oninput="updateValuation()">
+            </div>
+
+            <div class="mb-4">
+              <label for="slide-g" class="form-label">Crescimento Perpetuidade (g) <span id="val-g">3.50%</span></label>
+              <input type="range" class="form-range" id="slide-g" min="2.0" max="5.0" step="0.1" value="3.50" oninput="updateValuation()">
+            </div>
+
+            <hr class="my-4 border-secondary">
+            <button class="btn btn-outline-warning btn-sm w-100" onclick="resetDefaults()"><i class="bi bi-arrow-counterclockwise"></i> Restaurar Padrões</button>
+          </div>
+        </div>
+
+        <!-- Main Content Valuation -->
+        <div class="col-12 col-lg-8">
+          
+          <!-- Value Boxes Row 1 -->
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-4">
+              <div class="value-box vb-primary">
+                <span class="vb-title">Ke (CAPM)</span>
+                <span class="vb-value" id="val-box-ke">20,89%</span>
+                <i class="bi bi-graph-up vb-icon"></i>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="value-box vb-info">
+                <span class="vb-title">WACC Resultante</span>
+                <span class="vb-value text-info" id="val-box-wacc">13,80%</span>
+                <i class="bi bi-percent vb-icon"></i>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="value-box vb-success">
+                <span class="vb-title">TIR Implícita</span>
+                <span class="vb-value" id="val-box-tir">9,10%</span>
+                <i class="bi bi-arrow-up-right-circle vb-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Value Boxes Row 2 -->
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-4">
+              <div class="value-box vb-warning">
+                <span class="vb-title">Preço-Alvo (FCD)</span>
+                <span class="vb-value text-warning" id="val-box-preco-alvo">R$ 24,50</span>
+                <i class="bi bi-currency-dollar vb-icon"></i>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="value-box vb-danger">
+                <span class="vb-title">Upside / Downside</span>
+                <span class="vb-value" id="val-box-upside">+48.8%</span>
+                <i class="bi bi-arrow-left-right vb-icon"></i>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="value-box vb-success">
+                <span class="vb-title">Spread TIR - WACC</span>
+                <span class="vb-value" id="val-box-spread">-4.70 p.p.</span>
+                <i class="bi bi-lightning vb-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grid Sensibilidade e Projeções -->
+          <div class="row">
+            <div class="col-12 col-md-6 mb-4">
+              <div class="card">
+                <div class="card-header"><i class="bi bi-grid-3x3"></i> Sensibilidade do WACC — Beta vs Selic</div>
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-striped table-hover table-bordered table-sm align-middle" id="table-sens">
+                    <!-- Gerada dinamicamente via JS -->
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 mb-4">
+              <div class="card">
+                <div class="card-header"><i class="bi bi-bar-chart-steps"></i> Fluxos de Caixa Livres Projetados (FCD)</div>
+                <div class="card-body">
+                  <div id="chart-fcff-sim" style="height: 300px; width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================== ABA 3: VISUALIZAÇÕES ================== -->
+    <div id="tab-viz" class="tab-content">
+      
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-bar-chart"></i> Receita e EBITDA (Histórico + Projeções)</div>
+            <div class="card-body">
+              <div id="viz-receita-ebitda" style="height: 350px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-graph-down"></i> Evolução do CAPEX (R$ bilhões)</div>
+            <div class="card-body">
+              <div id="viz-capex" style="height: 350px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-piggy-bank"></i> Fluxo de Caixa Livre (pré-CAPEX)</div>
+            <div class="card-body">
+              <div id="viz-fcf" style="height: 350px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-shield-check"></i> Alavancagem Financeira (Dívida Líquida/EBITDA)</div>
+            <div class="card-body">
+              <div id="viz-alavancagem" style="height: 350px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-columns-gap"></i> Múltiplos Comparativos com Pares de Setor</div>
+            <div class="card-body">
+              <div id="viz-pares" style="height: 350px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-pie-chart"></i> Metodologia do Preço-Alvo Klabin</div>
+            <div class="card-body">
+              <div id="viz-preco-alvo" style="height: 350px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p class="mb-1"><i class="bi bi-shield-lock-fill"></i> Análise de Valuation Klabin S.A. (KLBN11) — Finalidade Acadêmica e Acadêmico-Doutoral.</p>
+      <p class="mb-0 text-secondary">Desenvolvido com tecnologia de alta compatibilidade para dispositivos móveis e desktops. Sem dependências externas de servidor R.</p>
+    </div>
+  </footer>
+
+  <!-- ================== SCRIPT FINANCEIRO E SIMULAÇÃO ================== -->
+  <script>
+    // Paleta de Cores
+    const cores = {
+      teal: "#2dd4bf",
+      blue: "#3b82f6",
+      gold: "#f0b429",
+      red: "#ef4444",
+      green: "#22c55e",
+      text: "#94a3b8",
+      border: "#334155"
+    };
+
+    // Dados Financeiros Fixos
+    const anosHistoricos = [2020, 2021, 2022, 2023, 2024, 2025];
+    const receitaHist = [13.0, 17.8, 22.0, 21.3, 22.8, 24.5];
+    const ebitdaHist = [3.6, 6.2, 8.2, 6.9, 7.6, 8.4];
+    const margensHist = [27.7, 34.8, 37.3, 32.4, 33.3, 34.3];
+    const capexHist = [-3.2, -4.8, -5.1, -3.9, -3.5, -3.2];
+    const fcfHist = [2.9, 5.1, 6.8, 5.4, 5.8, 7.1];
+    const dividaHist = [14.8, 19.9, 28.7, 28.4, 28.8, 27.0];
+    const dlEbitdaHist = [4.1, 3.2, 3.5, 4.1, 3.8, 3.2];
+
+    // Fluxo de Caixa Livre Projetado Base
+    const fcffBase = [3.1833, 3.1937, 3.2824, 3.3072, 3.4403, 3.5297, 3.5955, 3.7253, 3.8560];
+    const receitaProj = [25.725, 26.9598, 28.173, 29.3844, 30.5598, 31.7211, 32.8948, 34.079, 35.2717];
+    const ebitdaProj = [8.8751, 9.2472, 9.5788, 9.9907, 10.3903, 10.7217, 11.0197, 11.4165, 11.816];
+    
+    // Parâmetros de Mercado
+    const precoMercado = 16.46;
+    const dividaLiquida = 28.8;
+    const outrosPassivos = 2.3;
+    const nUnits = 1.322115; // Em bilhões de units
+
+    // Inicialização da página
+    window.onload = function() {
+      renderDashboardCharts();
+      updateValuation();
+    };
+
+    // Navegação entre abas
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
       });
-    </script>
-    <link rel="stylesheet" href="./shinylive/style-resets.css" />
-    <link rel="stylesheet" href="./shinylive/shinylive.css" />
-    
-  </head>
-  <body>
-    
-    <div style="height: 100vh; width: 100vw" id="root"></div>
-    
-  </body>
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      document.getElementById(tabId).classList.add('active');
+      el.classList.add('active');
+
+      // Re-desenhar gráficos na aba atual para evitar problemas de redimensionamento
+      setTimeout(() => {
+        if (tabId === 'tab-painel') {
+          renderDashboardCharts();
+        } else if (tabId === 'tab-valuation') {
+          updateValuation();
+        } else if (tabId === 'tab-viz') {
+          renderVizCharts();
+        }
+      }, 50);
+    }
+
+    // Função para resetar os sliders aos valores originais do PDF
+    function resetDefaults() {
+      document.getElementById("slide-beta").value = "0.60";
+      document.getElementById("slide-selic").value = "14.50";
+      document.getElementById("slide-erp").value = "6.50";
+      document.getElementById("slide-crp").value = "2.50";
+      document.getElementById("slide-de").value = "45.0";
+      document.getElementById("slide-tax").value = "34.0";
+      document.getElementById("slide-g").value = "3.50";
+      updateValuation();
+    }
+
+    // CÁLCULOS DO VALUATION DESKTOP / MOBILE (CLIENT-SIDE)
+    function updateValuation() {
+      // 1. Obter valores dos sliders
+      const beta = parseFloat(document.getElementById("slide-beta").value);
+      const selic = parseFloat(document.getElementById("slide-selic").value) / 100;
+      const erp = parseFloat(document.getElementById("slide-erp").value) / 100;
+      const crp = parseFloat(document.getElementById("slide-crp").value) / 100;
+      const de = parseFloat(document.getElementById("slide-de").value) / 100;
+      const tax = parseFloat(document.getElementById("slide-tax").value) / 100;
+      const g = parseFloat(document.getElementById("slide-g").value) / 100;
+
+      // Atualizar labels dos sliders
+      document.getElementById("val-beta").innerText = beta.toFixed(2);
+      document.getElementById("val-selic").innerText = (selic * 100).toFixed(2) + "%";
+      document.getElementById("val-erp").innerText = (erp * 100).toFixed(2) + "%";
+      document.getElementById("val-crp").innerText = (crp * 100).toFixed(2) + "%";
+      document.getElementById("val-de").innerText = (de * 100).toFixed(1) + "%";
+      document.getElementById("val-tax").innerText = (tax * 100).toFixed(1) + "%";
+      document.getElementById("val-g").innerText = (g * 100).toFixed(2) + "%";
+
+      // 2. Cálculos de WACC
+      const ke = selic + beta * erp + crp;
+      const kdPre = 0.078;
+      const kdPost = kdPre * (1 - tax);
+      const ed = 1 - de;
+      const wacc = ed * ke + de * kdPost;
+
+      // 3. Projeção dos FCFs ajustando o imposto
+      const fcffs = [];
+      const fatorDesconto = [];
+      const fcffDescontado = [];
+      
+      for (let t = 0; t < fcffBase.length; t++) {
+        // Ajustamos os fluxos baseado na alíquota simulada de IR
+        const ebit = ebitdaProj[t] - (Math.abs(capexHist[5]) * 0.6);
+        const irOriginal = ebit * 0.34;
+        const irSimulado = ebit * tax;
+        const fcffAjustado = fcffBase[t] - (irSimulado - irOriginal);
+        
+        fcffs.push(fcffAjustado);
+        fatorDesconto.push(1 / Math.pow(1 + wacc, t + 1));
+        fcffDescontado.push(fcffAjustado * fatorDesconto[t]);
+      }
+
+      // 4. Valor Terminal e Enterprise Value
+      const vt = (fcffs[8] * (1 + g)) / (wacc - g);
+      const vtDesc = vt / Math.pow(1 + wacc, 9);
+      const pvFcff = fcffDescontado.reduce((a, b) => a + b, 0);
+      const ev = pvFcff + vtDesc;
+
+      // 5. Equity Value e Preço-Alvo
+      const equity = ev - dividaLiquida - outrosPassivos;
+      const precoAlvo = equity / nUnits;
+      const upside = (precoAlvo / precoMercado - 1);
+
+      // 6. Taxa Interna de Retorno (TIR)
+      const evMercado = precoMercado * nUnits + dividaLiquida + outrosPassivos;
+      const tir = solveTIR(g, evMercado, fcffs);
+
+      // 7. Atualizar as Value Boxes
+      document.getElementById("val-box-ke").innerText = (ke * 100).toFixed(2) + "%";
+      document.getElementById("val-box-wacc").innerText = (wacc * 100).toFixed(2) + "%";
+      document.getElementById("val-box-preco-alvo").innerText = "R$ " + precoAlvo.toFixed(2);
+      
+      const boxUpside = document.getElementById("val-box-upside");
+      boxUpside.innerText = (upside >= 0 ? "+" : "") + (upside * 100).toFixed(1) + "%";
+      boxUpside.parentElement.className = "value-box " + (upside >= 0 ? "vb-success" : "vb-danger");
+
+      const boxTir = document.getElementById("val-box-tir");
+      const boxSpread = document.getElementById("val-box-spread");
+      if (tir !== null) {
+        boxTir.innerText = (tir * 100).toFixed(2) + "%";
+        const spread = tir - wacc;
+        boxSpread.innerText = (spread >= 0 ? "+" : "") + (spread * 100).toFixed(2) + " p.p.";
+        boxTir.parentElement.className = "value-box " + (spread >= 0 ? "vb-success" : "vb-danger");
+      } else {
+        boxTir.innerText = "N/D";
+        boxSpread.innerText = "N/D";
+        boxTir.parentElement.className = "value-box vb-danger";
+      }
+
+      // Sincronizar com os cards da Aba Geral
+      document.getElementById("box-preco-alvo-1").innerText = "R$ " + precoAlvo.toFixed(2);
+      document.getElementById("box-upside-1").innerText = "Upside: " + (upside >= 0 ? "+" : "") + (upside * 100).toFixed(1) + "%";
+      document.getElementById("box-wacc-1").innerText = (wacc * 100).toFixed(2) + "%";
+      if (tir !== null) {
+        document.getElementById("box-tir-1").innerText = (tir * 100).toFixed(2) + "%";
+        document.getElementById("box-spread-1").innerText = "Spread: " + ((tir - wacc) * 100).toFixed(2) + " p.p.";
+      }
+
+      // 8. Re-renderizar tabela de sensibilidade
+      renderSensitivityTable(erp, crp, de, tax);
+
+      // 9. Re-renderizar gráfico de fluxos na simulação
+      renderFcffSimulationChart(fcffs, fcffDescontado);
+    }
+
+    // Algoritmo numérico Bisseção para encontrar a TIR (Newton-Raphson/Brent simplificado)
+    function solveTIR(g, targetEV, fcffs) {
+      let low = g + 0.0001;
+      let high = 2.0;
+      let maxIter = 100;
+      let tol = 1e-6;
+
+      function npv(r) {
+        let sum = 0;
+        for (let t = 0; t < fcffs.length; t++) {
+          sum += fcffs[t] / Math.pow(1 + r, t + 1);
+        }
+        let vt = (fcffs[fcffs.length - 1] * (1 + g)) / (r - g);
+        sum += vt / Math.pow(1 + r, fcffs.length);
+        return sum - targetEV;
+      }
+
+      if (npv(low) * npv(high) > 0) return null;
+
+      for (let i = 0; i < maxIter; i++) {
+        let mid = (low + high) / 2;
+        let val = npv(mid);
+        if (Math.abs(val) < tol) return mid;
+        if (npv(low) * val < 0) {
+          high = mid;
+        } else {
+          low = mid;
+        }
+      }
+      return (low + high) / 2;
+    }
+
+    // Gerar tabela de Sensibilidade Beta vs Selic em HTML
+    function renderSensitivityTable(erp, crp, de, tax) {
+      const betas = [0.60, 0.75, 0.90, 1.05, 1.20];
+      const selics = [10.0, 11.5, 13.0, 14.5, 16.0];
+      
+      let html = "<thead><tr><th>Beta \\ Selic</th>";
+      for (let s of selics) {
+        html += `<th>${s.toFixed(1)}%</th>`;
+      }
+      html += "</tr></thead><tbody>";
+
+      for (let b of betas) {
+        html += `<tr><td><strong>${b.toFixed(2)}</strong></td>`;
+        for (let s of selics) {
+          const rf_val = s / 100;
+          const ke_val = rf_val + b * erp + crp;
+          const wacc_val = (1 - de) * ke_val + de * (0.078 * (1 - tax));
+          html += `<td>${(wacc_val * 100).toFixed(2)}%</td>`;
+        }
+        html += "</tr>";
+      }
+      html += "</tbody>";
+
+      document.getElementById("table-sens").innerHTML = html;
+    }
+
+    // RENDERIZAR GRÁFICOS DINÂMICOS DO PLOTLY.JS
+
+    // Aba Geral — Gráficos
+    function renderDashboardCharts() {
+      const trace1 = {
+        x: anosHistoricos,
+        y: receitaHist,
+        name: 'Receita',
+        type: 'bar',
+        marker: { color: cores.blue }
+      };
+
+      const trace2 = {
+        x: anosHistoricos,
+        y: ebitdaHist,
+        name: 'EBITDA',
+        type: 'bar',
+        marker: { color: cores.gold }
+      };
+
+      const layout1 = {
+        barmode: 'group',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'R$ bilhões', gridcolor: cores.border },
+        margin: { t: 30, b: 30, l: 40, r: 10 },
+        legend: { x: 0, y: 1.1, orientation: 'h' }
+      };
+
+      Plotly.newPlot('chart-receita-ebitda', [trace1, trace2], layout1, {displayModeBar: false, responsive: true});
+
+      // Gráfico de Margens consertado com cores explícitas hexadecimais
+      const trace3 = {
+        x: anosHistoricos,
+        y: margensHist,
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: cores.teal, width: 3 },
+        marker: { color: cores.teal, size: 8 },
+        name: 'Margem EBITDA (%)'
+      };
+
+      const layout2 = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: '%', gridcolor: cores.border },
+        margin: { t: 30, b: 30, l: 40, r: 10 }
+      };
+
+      Plotly.newPlot('chart-margens', [trace3], layout2, {displayModeBar: false, responsive: true});
+    }
+
+    // Gráfico de Simulação de Fluxo de Caixa no Valuation
+    function renderFcffSimulationChart(fcffs, fcffDescontado) {
+      const anos = [2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034];
+      
+      const traceNominal = {
+        x: anos,
+        y: fcffs,
+        name: 'FCL Nominal',
+        type: 'bar',
+        marker: { color: cores.teal }
+      };
+
+      const traceDesc = {
+        x: anos,
+        y: fcffDescontado,
+        name: 'FCL Descontado',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: cores.red, width: 2 },
+        marker: { color: cores.red, size: 6 }
+      };
+
+      const layout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'R$ bilhões', gridcolor: cores.border },
+        margin: { t: 30, b: 30, l: 40, r: 10 },
+        legend: { x: 0, y: 1.1, orientation: 'h' }
+      };
+
+      Plotly.newPlot('chart-fcff-sim', [traceNominal, traceDesc], layout, {displayModeBar: false, responsive: true});
+    }
+
+    // Aba 3 — Visualizações Avançadas
+    function renderVizCharts() {
+      // 1. Receita e EBITDA (Histórico + Projeções)
+      const anosCompletos = [...anosHistoricos, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034];
+      const receitaCompleta = [...receitaHist, ...receitaProj];
+      const ebitdaCompleto = [...ebitdaHist, ...ebitdaProj];
+
+      const tr1 = {
+        x: anosCompletos,
+        y: receitaCompleta,
+        name: 'Receita',
+        type: 'bar',
+        marker: { color: cores.blue }
+      };
+
+      const tr2 = {
+        x: anosCompletos,
+        y: ebitdaCompleto,
+        name: 'EBITDA',
+        type: 'bar',
+        marker: { color: cores.gold }
+      };
+
+      const lay1 = {
+        barmode: 'group',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'R$ bilhões', gridcolor: cores.border },
+        margin: { t: 30, b: 30, l: 40, r: 10 },
+        legend: { x: 0, y: 1.1, orientation: 'h' }
+      };
+
+      Plotly.newPlot('viz-receita-ebitda', [tr1, tr2], lay1, {displayModeBar: false, responsive: true});
+
+      // 2. Evolução do CAPEX
+      const trCapex = {
+        x: anosHistoricos,
+        y: capexHist.map(Math.abs),
+        name: 'CAPEX',
+        type: 'bar',
+        marker: { color: cores.red }
+      };
+
+      const layCapex = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'R$ bilhões', gridcolor: cores.border },
+        margin: { t: 30, b: 30, l: 40, r: 10 }
+      };
+
+      Plotly.newPlot('viz-capex', [trCapex], layCapex, {displayModeBar: false, responsive: true});
+
+      // 3. FCF pré-CAPEX
+      const trFcf = {
+        x: anosHistoricos,
+        y: fcfHist,
+        name: 'FCF pré-CAPEX',
+        type: 'bar',
+        marker: { color: cores.teal }
+      };
+
+      const layFcf = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'R$ bilhões', gridcolor: cores.border },
+        margin: { t: 30, b: 30, l: 40, r: 10 }
+      };
+
+      Plotly.newPlot('viz-fcf', [trFcf], layFcf, {displayModeBar: false, responsive: true});
+
+      // 4. Alavancagem com Duplo Eixo
+      const trDiv = {
+        x: anosHistoricos,
+        y: dividaHist,
+        name: 'Dívida Líquida',
+        type: 'bar',
+        marker: { color: cores.red, opacity: 0.6 }
+      };
+
+      const trLeverage = {
+        x: anosHistoricos,
+        y: dlEbitdaHist,
+        name: 'DL / EBITDA (dir)',
+        yaxis: 'y2',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: cores.gold, width: 3 },
+        marker: { color: cores.gold, size: 8 }
+      };
+
+      const layAlav = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'R$ bilhões', gridcolor: cores.border },
+        yaxis2: {
+          title: 'Alavancagem (x)',
+          overlaying: 'y',
+          side: 'right',
+          gridcolor: 'rgba(0,0,0,0)'
+        },
+        margin: { t: 30, b: 30, l: 40, r: 40 },
+        legend: { x: 0, y: 1.1, orientation: 'h' }
+      };
+
+      Plotly.newPlot('viz-alavancagem', [trDiv, trLeverage], layAlav, {displayModeBar: false, responsive: true});
+
+      // 5. Comparação com Pares
+      const empresas = ["Klabin", "Suzano", "Irani", "CMPC"];
+      const evEbitdaPares = [7.2, 8.1, 5.8, 7.8];
+      const plPares = [14.5, 18.2, 11.0, 16.0];
+
+      const trPares1 = {
+        x: empresas,
+        y: evEbitdaPares,
+        name: 'EV/EBITDA',
+        type: 'bar',
+        marker: { color: cores.blue }
+      };
+
+      const trPares2 = {
+        x: empresas,
+        y: plPares,
+        name: 'P/L',
+        type: 'bar',
+        marker: { color: cores.gold }
+      };
+
+      const layPares = {
+        barmode: 'group',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'Múltiplo (x)', gridcolor: cores.border },
+        margin: { t: 30, b: 30, l: 40, r: 10 },
+        legend: { x: 0, y: 1.1, orientation: 'h' }
+      };
+
+      Plotly.newPlot('viz-pares', [trPares1, trPares2], layPares, {displayModeBar: false, responsive: true});
+
+      // 6. Composição do Preço-Alvo
+      const categoriasPreco = ["FCD (60%)", "Múltiplos (40%)", "Preço-Alvo"];
+      const valoresPreco = [24.80, 24.55, 24.50];
+
+      const trPreco = {
+        x: categoriasPreco,
+        y: valoresPreco,
+        type: 'bar',
+        marker: { color: [cores.blue, cores.gold, cores.teal] },
+        text: valoresPreco.map(v => "R$ " + v.toFixed(2)),
+        textposition: 'outside'
+      };
+
+      const layPreco = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: cores.text, family: 'Inter' },
+        xaxis: { gridcolor: cores.border },
+        yaxis: { title: 'R$ / unit', gridcolor: cores.border, range: [0, 28] },
+        margin: { t: 30, b: 30, l: 40, r: 10 }
+      };
+
+      Plotly.newPlot('viz-preco-alvo', [trPreco], layPreco, {displayModeBar: false, responsive: true});
+    }
+
+  </script>
+
+</body>
 </html>
